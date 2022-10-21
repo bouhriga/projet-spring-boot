@@ -1,0 +1,192 @@
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Bibliotheque bouhriga</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+       
+        <li class="nav-item active">
+          <a (click)="onOpenModel1('add')" class="nav-link" >Ajouter emprunt</a>
+        </li>
+      </ul>
+  
+    </div>
+  </nav>
+
+
+
+  
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addempruntModel" tabindex="-1" role="dialog" aria-labelledby="addempruntModel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="addempruntModalLabel">Ajouter emprunt</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <form #addForm="ngForm" (ngSubmit)="onAddemprunt(addForm)">
+          <div class="form-group">
+             <label for="adherent.cin">CIN d'adherent</label>
+             <input type="text" ngModel name="dateRet" class="form-control"  placeholder="Entre le cin d'adherent" required>
+
+          </div>
+          <div class="form-group">
+            <label for="adherent.cin">Selectioner un document</label>
+            <select class="custom-select" name="id_document" [(ngModel)]="s">
+              <option value={{document.id}} *ngFor="let document of documents">{{document.nom}}</option>
+            </select>
+         </div>
+          <div class="modal-footer">
+             <button type="button" id="add-emprunt-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Ajouter</button>
+          </div>
+       
+          </form>
+       </div>
+    </div>
+  </div>
+  </div>
+  <div class="centrage">
+    <br>
+<h1>Liste des emprunts</h1>
+<br>
+</div>
+<div class="container" id="main-container">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="main-box clearfix">
+			<div class="table-responsive">
+				<table class="table user-list">
+					<thead>
+						<tr>
+              <th class="text-center"><span>Nom adherent</span></th>
+              <th class="text-center"><span>Prenom adherent</span></th>
+							<th class="text-center"><span>CIN</span></th>
+                            <th class="text-center"><span>Id document</span></th>
+							<th class="text-center"><span>date d'emprunt</span></th>
+                            <th class="text-center"><span>date de retour</span></th>
+                            <th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let emprunt of emprunts">
+              <td class="text-center">
+                {{emprunt.adherent.nom}}
+							</td>
+              <td class="text-center">
+                {{emprunt.adherent.prenom}}
+							</td>
+							<td class="text-center">
+                {{emprunt.adherent.cin}}
+							</td>
+              <td class="text-center">
+                {{emprunt.id_document}}
+              </td>
+							<td class="text-center">
+								{{emprunt.dateEmp}}
+							</td>
+							<td class="text-center">
+								{{emprunt.dateRet}}
+							</td>
+                           
+							<td style="width: 20%;">
+					
+								<a (click)="onOpenModel(emprunt,'edit')" class="table-link">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+								<a (click)="onOpenModel(emprunt,'delete')" class="table-link danger">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+							</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+
+ <!-- Edit Modal -->
+ <div class="modal fade" id="updateempruntModel" tabindex="-1" role="dialog" aria-labelledby="ModelEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateempruntModalLabel">Modifier l'emprunt </h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <form #editForm="ngForm">
+              <div class="form-group">
+                 <label for="id_document">id document</label>
+                 <input type="text" ngModel="{{editemprunt?.id_document}}" name="id_document" class="form-control"  aria-describedby="emailHelp" placeholder="Entre id de document">
+              </div>
+              <div class="form-group">
+                <label for="id_document"> date d'emprunt</label>
+                 <input type="text" ngModel="{{editemprunt?.dateEmp}}" name="dateEmp" class="form-control" id="prenom" placeholder="Entre date d'emprunt">
+              </div>
+              
+                 <input type="hidden" ngModel="{{editemprunt?.id_emprunt}}" name="id_emprunt" class="form-control"placeholder="Entre date emprunt">
+      
+              <div class="form-group">
+                 <label for="dateRet">date de retour</label>
+                 <input type="text" ngModel="{{editemprunt?.dateRet}}" name="dateRet" class="form-control" id="adresse"  placeholder="Entre date de retour">
+              </div>
+            
+              <div class="modal-footer">
+                 <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                 <button (click)="onUpdateemprunt(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Modifier</button>
+              </div>
+           </form>
+        </div>
+     </div>
+  </div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteempruntModel" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="emprunt">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="deleteModelLabel">Delete emprunt</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <p>Êtes-vous sûr de vouloir supprimer l'emprunt ?</p>
+           <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <!-- (click)="onDeletedictionnaire(deleteemprunt.id)"-->
+              <button (click)="onDeleteemprunt(deleteemprunt.id_emprunt)" data-dismiss="modal" class="btn btn-danger" >Yes</button>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+
+  <!-- Notification for no emprunt-->
+  <div *ngIf="emprunts?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+    <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading">NON EMPRUNTS!</h4>
+      <p>
+        Aucun emprunt n'a été trouvé.</p>
+    </div>
+    </div>

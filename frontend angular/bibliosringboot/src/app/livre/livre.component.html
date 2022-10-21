@@ -1,0 +1,200 @@
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Bibliotheque bouhriga</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+    
+        <li class="nav-item active">
+          <a (click)="onOpenModel1('add')" class="nav-link" >Ajouter livre</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input type="search" (ngModelChange)="searchlivres(key.value)" #key="ngModel" ngModel
+         name="key" id="searchName" class="form-control mr-sm-2" placeholder="Chercher avec nom livre..." required>
+     </form>
+  
+    </div>
+  </nav>
+  <div class="centrage">
+    <br>
+<h1>Liste des livres</h1>
+<br>
+</div>
+<div class="container" id="main-container">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="main-box clearfix">
+			<div class="table-responsive">
+				<table class="table user-list">
+					<thead>
+						<tr>
+							<th class="text-center"><span>nom</span></th>
+							<th class="text-center"><span>prix de vente</span></th>
+                            <th class="text-center"><span>disponibiliter</span></th>
+							<th class="text-center"><span>l'auteur</span></th>
+                            <th class="text-center"><span>numero de page</span></th>
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let livre of livres">
+							<td class="text-center">
+								{{livre.nom}}
+							</td>
+							<td class="text-center">
+								{{livre.prix_vente}}
+							</td>
+							<td class="text-center">
+								{{livre.disponible}}
+							</td>
+                            <td class="text-center">
+                                {{livre.auteur}}
+                            </td>
+							<td class="text-center">
+                                {{livre.numpage}}
+                            </td>
+							<td style="width: 20%;">
+					
+								<a (click)="onOpenModel(livre,'edit')" class="table-link">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+								<a (click)="onOpenModel(livre,'delete')" class="table-link danger">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+							</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteLivreModel" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="deleteModelLabel">Delete livre</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <p>Êtes-vous sûr de vouloir supprimer le livre{{deletelivre?.nom}}?</p>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <!-- (click)="onDeletelivre(deletelivre.id)"-->
+                <button (click)="onDeletelivre(dellivre.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+             </div>
+          </div>
+       </div>
+    </div>
+  </div>
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addLivreModel" tabindex="-1" role="dialog" aria-labelledby="addLivreModel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="addLivreModalLabel">Ajouter livre</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #addForm="ngForm" (ngSubmit)="onAddlivre(addForm)">
+            <div class="form-group">
+               <label for="nom">Nom de livre</label>
+               <input type="text" ngModel name="nom" class="form-control" id="nom" placeholder="Entre le nom de livre" required>
+            </div>
+            <div class="form-group">
+               <label for="prix_vente">Prix de livre</label>
+               <input type="number" ngModel name="prix_vente" class="form-control" id="prix_vente" placeholder="Entre le prix de livre" required>
+            </div>
+            <div class="form-group">
+               <label for="disponible">Disponibiliter</label>
+               <input type="number" ngModel name="disponible" class="form-control" id="disponible" placeholder="Entre si disponible" required>
+            </div>
+            <div class="form-group">
+               <label for="auteur">l'auteur de livre</label>
+               <input type="text" ngModel name="auteur" class="form-control" id="auteur" placeholder="Entre l'auteur de livre" required>
+            </div>
+            <div class="form-group">
+               <label for="numpage">Numero de pages</label>
+               <input type="number" ngModel name="numpage" class="form-control" id="numpage" placeholder="Entre le numero de pages"required>
+            </div>
+            <div class="modal-footer">
+               <button type="button" id="add-adherent-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Ajouter</button>
+            </div>
+            </form>
+         </div>
+      </div>
+    </div>
+    </div>
+ 
+ <!-- Edit Modal -->
+  <div class="modal fade" id="updateLivreModel" tabindex="-1" role="dialog" aria-labelledby="ModelEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updatelivreModalLabel">Modifier adherent {{editlivre?.nom}} </h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <form #editForm="ngForm">
+                <div class="form-group">
+                   <label for="nom">Nom de livre</label>
+                   <input type="text" ngModel="{{editlivre?.nom}}" name="nom" class="form-control" id="nom" aria-describedby="emailHelp" placeholder="Entre le nom de livre">
+                </div>
+                <div class="form-group">
+                   <label for="prix_vente">Prix de livre</label>
+                   <input type="number" ngModel="{{editlivre?.prix_vente}}" name="prix_vente" class="form-control" id="prix_vente" placeholder="Entre le prix de livre">
+                </div>
+                
+                   <input type="hidden" ngModel="{{editlivre?.id}}" name="id" class="form-control" id="id" >
+        
+                <div class="form-group">
+                   <label for="disponible">Disponibiliter</label>
+                   <input type="number" ngModel="{{editlivre?.disponible}}" name="disponible" class="form-control" id="disponible"  placeholder="Entre si disponible">
+                </div>
+                <div class="form-group">
+                   <label for="auteur">l'auteur de livre</label>
+                   <input type="text" ngModel="{{editlivre?.auteur}}" name="auteur" class="form-control" id="auteur" placeholder="Entre auteur de livre" >
+                </div>
+                <div class="form-group">
+                    <label for="numpage">Numero de pages</label>
+                    <input type="number" ngModel="{{editlivre?.numpage}}" name="numpage" class="form-control" id="numpage" placeholder="Entre le numero de pages" >
+                 </div>
+                <div class="modal-footer">
+                   <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                   <button (click)="onUpdatelivre(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Modifier</button>
+                </div>
+             </form>
+          </div>
+       </div>
+    </div>
+  </div>
+  <!-- Notification for no adherent-->
+  <div *ngIf="livres?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">NON LIVRES!</h4>
+    <p>
+      Aucun livre n'a été trouvé.</p>
+  </div>
+  </div>
+ 

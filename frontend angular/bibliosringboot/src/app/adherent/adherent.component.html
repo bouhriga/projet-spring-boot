@@ -1,0 +1,233 @@
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Bibliotheque bouhriga</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+       
+        <li class="nav-item active">
+          <a (click)="onOpenModel1('add')" class="nav-link" >Ajouter adherent</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input type="search" (ngModelChange)="searchAdherents(key.value)" #key="ngModel" ngModel
+         name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search adherent avec CIN..." required>
+     </form>
+  
+    </div>
+  </nav>
+  <div class="centrage">
+    <br>
+<h1>Liste des adherents</h1>
+<br>
+</div>
+<div class="container" id="main-container">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="main-box clearfix">
+			<div class="table-responsive">
+				<table class="table user-list">
+					<thead>
+						<tr>
+							<th  class="text-center"><span>Nom</span></th>
+							<th  class="text-center"><span>Prenom</span></th>
+							<th class="text-center"><span>CIN</span></th>
+              <th  class="text-center"><span>Address</span></th>
+							<th  class="text-center"><span>Date de Naissance</span></th>
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let adherent of adherents">
+							<td class="text-center">
+								{{adherent.nom}}
+							</td>
+							<td class="text-center">
+								{{adherent.prenom}}
+							</td>
+							<td class="text-center">
+								{{adherent.cin}}
+							</td>
+                            <td class="text-center">
+                                {{adherent.adresse}}
+                            </td>
+							<td class="text-center">
+                                {{adherent.datenaissance}}
+                            </td>
+							<td style="width: 20%;">
+					
+								<a (click)="onOpenModel(adherent,'edit')" class="table-link">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+								<a (click)="onOpenModel(adherent,'delete')" class="table-link danger">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+                        <a (click)="onOpenModel(adherent,'profil')" class="btn btn-white btn-bitbucket">
+                           <i class="fa fa-group"></i>
+                       </a>
+							</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteAdherentModel" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="deleteModelLabel">Delete adherent</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <p>Êtes-vous sûr de vouloir supprimer l'adherent {{deladherent?.nom}}?</p>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <!-- (click)="onDeleteadherent(deleteadherent.cin)"-->
+                <button (click)="onDeleteadherent(deleteadherent.cin)"  class="btn btn-danger" data-dismiss="modal">Yes</button>
+             </div>
+          </div>
+       </div>
+    </div>
+  </div>
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addAdherentModel" tabindex="-1" role="dialog" aria-labelledby="addAdherentModel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="addAdherentModalLabel">Ajouter adherent</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #addForm="ngForm" (ngSubmit)="onAddEmloyee(addForm)">
+            <div class="form-group">
+               <label for="nom">Nom</label>
+               <input type="text" ngModel name="nom" class="form-control" id="nom" placeholder="Entre le nom" required>
+            </div>
+            <div class="form-group">
+               <label for="prenom">Prenom</label>
+               <input type="text" ngModel name="prenom" class="form-control" id="prenom" placeholder="Entre le prenom" required>
+            </div>
+            <div class="form-group">
+               <label for="CIN">CIN</label>
+               <input type="text" ngModel name="cin" class="form-control" id="CIN" placeholder="Entre le CIN" required>
+            </div>
+            <div class="form-group">
+               <label for="address">Address</label>
+               <input type="text" ngModel name="adresse" class="form-control" id="address" placeholder="Entre l'address" required>
+            </div>
+            <div class="form-group">
+               <label for="phone">Date de Naissance</label>
+               <input type="date" ngModel name="datenaissance" class="form-control" id="date" required>
+            </div>
+            <div class="modal-footer">
+               <button type="button" id="add-adherent-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Ajouter</button>
+            </div>
+            </form>
+         </div>
+      </div>
+    </div>
+    </div>
+ 
+ <!-- Edit Modal -->
+  <div class="modal fade" id="updateAdherentModel" tabindex="-1" role="dialog" aria-labelledby="ModelEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateadherentModalLabel">Modifier adherent {{editadherent?.nom}} {{editadherent?.prenom}}</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <form #editForm="ngForm">
+                <div class="form-group">
+                   <label for="nom">Nom</label>
+                   <input type="text" ngModel="{{editadherent?.nom}}" name="nom" class="form-control" id="nom" aria-describedby="emailHelp" placeholder="Entre le nom">
+                </div>
+                <div class="form-group">
+                   <label for="prenom">Prenom</label>
+                   <input type="text" ngModel="{{editadherent?.prenom}}" name="prenom" class="form-control" id="prenom" placeholder="Entre le Prenom">
+                </div>
+                
+                   <input type="hidden" ngModel="{{editadherent?.cin}}" name="cin" class="form-control" id="cin" placeholder="Entre le cin">
+        
+                <div class="form-group">
+                   <label for="phone">Adresse</label>
+                   <input type="text" ngModel="{{editadherent?.adresse}}" name="adresse" class="form-control" id="adresse"  placeholder="Entre l'adresse">
+                </div>
+                <div class="form-group">
+                   <label for="datenaissance">La date de naissance</label>
+                   <input type="date" ngModel="{{editadherent?.datenaissance}}" name="datenaissance" class="form-control" id="datenaissance" placeholder="datenaissance">
+                </div>
+                <div class="modal-footer">
+                   <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                   <button (click)="onUpdateadherent(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Modifier</button>
+                </div>
+             </form>
+          </div>
+       </div>
+    </div>
+  </div>
+  <!-- Notification for no adherent-->
+  <div *ngIf="adherents?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">NON ADHERENT!</h4>
+    <p>
+      Aucun adherent n'a été trouvé.</p>
+  </div>
+  </div>
+
+  <!-- profil -->
+  <div class="modal fade" id="profilAdherentModel" tabindex="-1" role="dialog" aria-labelledby="ModelEditModalLabel" aria-hidden="true">
+  <div class="container d-flex justify-content-center mt-5">
+
+	<div class="card">
+		
+		<div class="top-container">
+			
+			<img src="https://www.bootdey.com/img/Content/avatar/avatar7.png" class="img-fluid profile-image" width="70">
+
+			<div class="ml-3">
+				<h5 class="name">Information </h5>
+				<p class="mail">{{editadherent?.nom}} {{editadherent?.prenom}}</p>
+			</div>
+		</div>
+
+		<div class="recent-border mt-4">
+			<span class="recent-orders">Nom   &nbsp;&nbsp;&nbsp;:   &nbsp;&nbsp;&nbsp;  </span> <span class="wishlist">{{editadherent?.nom}}</span>
+		</div>
+		<div class="recent-border mt-4">
+			<span class="recent-orders">Prenom   &nbsp;&nbsp;&nbsp;:   &nbsp;&nbsp;&nbsp;  </span> <span class="wishlist">{{editadherent?.prenom}}</span>
+		</div>
+      <div class="recent-border mt-4">
+			<span class="recent-orders">CIN   &nbsp;&nbsp;&nbsp;:   &nbsp;&nbsp;&nbsp;  </span> <span class="wishlist">{{editadherent?.cin}}</span>
+		</div>
+      <div class="recent-border mt-4">
+			<span class="recent-orders">Adresse  &nbsp;&nbsp;&nbsp;:   &nbsp;&nbsp;&nbsp;  </span> <span class="wishlist">{{editadherent?.adresse}}</span>
+		</div>
+      <div class="recent-border mt-4">
+			<span class="recent-orders">Date de naissance  &nbsp;&nbsp;&nbsp;:   &nbsp;&nbsp;&nbsp;  </span> <span class="wishlist">{{editadherent?.datenaissance}}</span>
+		</div>
+	</div>
+</div>
+</div>

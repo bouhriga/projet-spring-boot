@@ -1,0 +1,69 @@
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Bibliotheque bouhriga</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+      
+        <li class="nav-item active">
+		  <a href="#" routerLink="/revue" class="nav-link">Revue</a>
+        </li>
+		<li class="nav-item active">
+			<a href="#" routerLink="/dictionnaire" class="nav-link">Dictionnaire</a>
+		</li>
+		<li class="nav-item active">
+			<a href="#" routerLink="/livre" class="nav-link">Livre</a>
+		</li>
+	</ul>
+    </div>
+  </nav>
+
+<div class="centrage">
+    <br>
+<h1>Liste des dictionnaires</h1>
+<br>
+</div>
+<div class="container" id="main-container">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="main-box clearfix">
+			<div class="table-responsive">
+				<table class="table user-list">
+					<thead>
+						<tr>
+                            <th class="text-center"><span>id</span></th>
+							<th class="text-center"><span>nom</span></th>
+							<th class="text-center"><span>prix de vente</span></th>
+                            <th class="text-center"><span>disponibiliter</span></th>
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let document of documents">
+                            <td class="text-center">
+                                {{document.id}}
+                            </td>
+                            <td class="text-center">
+								{{document.nom}}
+							</td>
+							<td class="text-center">
+								{{document.prix_vente}}
+							</td>
+							<td class="text-center">
+								{{document.disponible}}
+							</td>
+                           
+							
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

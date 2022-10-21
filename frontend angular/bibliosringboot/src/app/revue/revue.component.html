@@ -1,0 +1,200 @@
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Bibliotheque bouhriga</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+    
+        <li class="nav-item active">
+          <a (click)="onOpenModel1('add')" class="nav-link" >Ajouter revue</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input type="search" (ngModelChange)="searchrevues(key.value)" #key="ngModel" ngModel
+         name="key" id="searchName" class="form-control mr-sm-2" placeholder="Chercher avec nom revue..." required>
+     </form>
+  
+    </div>
+  </nav>
+  <div class="centrage">
+    <br>
+<h1>Liste des revues</h1>
+<br>
+</div>
+<div class="container" id="main-container">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="main-box clearfix">
+			<div class="table-responsive">
+				<table class="table user-list">
+					<thead>
+						<tr>
+							<th class="text-center"><span>nom</span></th>
+							<th class="text-center"><span>prix de vente</span></th>
+                            <th class="text-center"><span>disponibiliter</span></th>
+							<th class="text-center"><span>la reference</span></th>
+                            <th class="text-center"><span>année de publiciter</span></th>
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let revue of revues">
+							<td class="text-center">
+								{{revue.nom}}
+							</td>
+							<td class="text-center">
+								{{revue.prix_vente}}
+							</td>
+							<td class="text-center">
+								{{revue.disponible}}
+							</td>
+                            <td class="text-center">
+                                {{revue.reference}}
+                            </td>
+							<td class="text-center">
+                                {{revue.annee_pub}}
+                            </td>
+							<td style="width: 20%;">
+					
+								<a (click)="onOpenModel(revue,'edit')" class="table-link">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+								<a (click)="onOpenModel(revue,'delete')" class="table-link danger">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+							</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleterevueModel" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="deleteModelLabel">Delete revue</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <p>Êtes-vous sûr de vouloir supprimer le revue{{deleterevue?.nom}}?</p>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <!-- (click)="onDeleterevue(deleterevue.id)"-->
+                <button delrevue (click)="onDeleterevue(delrevue.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+             </div>
+          </div>
+       </div>
+    </div>
+  </div>
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addrevueModel" tabindex="-1" role="dialog" aria-labelledby="addrevueModel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="addrevueModalLabel">Ajouter revue</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #addForm="ngForm" (ngSubmit)="onAddrevue(addForm)">
+            <div class="form-group">
+               <label for="nom">Nom de revue</label>
+               <input type="text" ngModel name="nom" class="form-control" id="nom" placeholder="Entre le nom de revue" required>
+            </div>
+            <div class="form-group">
+               <label for="prix_vente">Prix de revue</label>
+               <input type="number" ngModel name="prix_vente" class="form-control" id="prix_vente" placeholder="Entre le prix de revue" required>
+            </div>
+            <div class="form-group">
+               <label for="disponible">Disponibiliter</label>
+               <input type="number" ngModel name="disponible" class="form-control" id="disponible" placeholder="Entre si disponible" required>
+            </div>
+            <div class="form-group">
+               <label for="reference">la reference de revue</label>
+               <input type="text" ngModel name="reference" class="form-control" id="reference" placeholder="Entre  la reference de revue" required>
+            </div>
+            <div class="form-group">
+               <label for="annee_pub">année de publiciter</label>
+               <input type="text" ngModel name="annee_pub" class="form-control" id="annee_pub" placeholder="Entre année de publiciter"required>
+            </div>
+            <div class="modal-footer">
+               <button type="button" id="add-revue-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Ajouter</button>
+            </div>
+            </form>
+         </div>
+      </div>
+    </div>
+    </div>
+ 
+ <!-- Edit Modal -->
+  <div class="modal fade" id="updaterevueModel" tabindex="-1" role="dialog" aria-labelledby="ModelEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updaterevueModalLabel">Modifier revue {{editrevue?.nom}} </h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <form #editForm="ngForm">
+                <div class="form-group">
+                   <label for="nom">Nom de revue</label>
+                   <input type="text" ngModel="{{editrevue?.nom}}" name="nom" class="form-control" id="nom" aria-describedby="emailHelp" placeholder="Entre le nom de revue">
+                </div>
+                <div class="form-group">
+                   <label for="prix_vente">Prix de revue</label>
+                   <input type="number" ngModel="{{editrevue?.prix_vente}}" name="prix_vente" class="form-control" id="prix_vente" placeholder="Entre le prix de revue">
+                </div>
+                
+                   <input type="hidden" ngModel="{{editrevue?.id}}" name="id" class="form-control" id="id" >
+        
+                <div class="form-group">
+                   <label for="disponible">Disponibiliter</label>
+                   <input type="number" ngModel="{{editrevue?.disponible}}" name="disponible" class="form-control" id="disponible"  placeholder="Entre si disponible">
+                </div>
+                <div class="form-group">
+                   <label for="reference">l'reference de revue</label>
+                   <input type="text" ngModel="{{editrevue?.reference}}" name="reference" class="form-control" id="reference" placeholder="Entre reference de revue" >
+                </div>
+                <div class="form-group">
+                    <label for="annee_pub">année de publiciter</label>
+                    <input type="text" ngModel="{{editrevue?.annee_pub}}" name="annee_pub" class="form-control" id="annee_pub" placeholder="Entre année de publiciter" >
+                 </div>
+                <div class="modal-footer">
+                   <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                   <button (click)="onUpdaterevue(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Modifier</button>
+                </div>
+             </form>
+          </div>
+       </div>
+    </div>
+  </div>
+  <!-- Notification for no revue-->
+  <div *ngIf="revues?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">NON REVUES!</h4>
+    <p>
+      Aucun revue n'a été trouvé.</p>
+  </div>
+  </div>
+ 

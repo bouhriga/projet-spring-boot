@@ -1,0 +1,191 @@
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Bibliotheque bouhriga</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+      
+        <li class="nav-item active">
+          <a (click)="onOpenModel1('add')" class="nav-link" >Ajouter dictionnaire</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input type="search" (ngModelChange)="searchdictionnaires(key.value)" #key="ngModel" ngModel
+         name="key" id="searchName" class="form-control mr-sm-2" placeholder="Chercher avec nom dictionnaire..." required>
+     </form>
+  
+    </div>
+  </nav>
+  <div class="centrage">
+    <br>
+<h1>Liste des dictionnaires</h1>
+<br>
+</div>
+<div class="container" id="main-container">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="main-box clearfix">
+			<div class="table-responsive">
+				<table class="table user-list">
+					<thead>
+						<tr>
+							<th class="text-center"><span>nom</span></th>
+							<th class="text-center"><span>prix de vente</span></th>
+                            <th class="text-center"><span>disponibiliter</span></th>
+							<th class="text-center"><span>langue</span></th>
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let dictionnaire of dictionnaires">
+							<td class="text-center">
+								{{dictionnaire.nom}}
+							</td>
+							<td class="text-center">
+								{{dictionnaire.prix_vente}}
+							</td>
+							<td class="text-center">
+								{{dictionnaire.disponible}}
+							</td>
+                            <td class="text-center">
+                                {{dictionnaire.langue}}
+                            </td>
+							
+							<td style="width: 20%;">
+					
+								<a (click)="onOpenModel(dictionnaire,'edit')" class="table-link">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+								<a (click)="onOpenModel(dictionnaire,'delete')" class="table-link danger">
+									<span class="fa-stack">
+										<i class="fa fa-square fa-stack-2x"></i>
+										<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+									</span>
+								</a>
+							</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deletedictionnaireModel" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="deleteModelLabel">Delete dictionnaire</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <p>Êtes-vous sûr de vouloir supprimer le dictionnaire{{delictionnaire?.nom}}?</p>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <!-- (click)="onDeletedictionnaire(deletedictionnaire.id)"-->
+                <button (click)="onDeletedictionnaire(deletedictionnaire.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+             </div>
+          </div>
+       </div>
+    </div>
+  </div>
+<!-- Add Employee Modal -->
+<div class="modal fade" id="adddictionnaireModel" tabindex="-1" role="dialog" aria-labelledby="adddictionnaireModel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="adddictionnaireModalLabel">Ajouter dictionnaire</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #addForm="ngForm" (ngSubmit)="onAdddictionnaire(addForm)">
+            <div class="form-group">
+               <label for="nom">Nom de dictionnaire</label>
+               <input type="text" ngModel name="nom" class="form-control" id="nom" placeholder="Entre le nom de dictionnaire" required>
+            </div>
+            <div class="form-group">
+               <label for="prix_vente">Prix de dictionnaire</label>
+               <input type="number" ngModel name="prix_vente" class="form-control" id="prix_vente" placeholder="Entre le prix de dictionnaire" required>
+            </div>
+            <div class="form-group">
+               <label for="disponible">Disponibiliter</label>
+               <input type="number" ngModel name="disponible" class="form-control" id="disponible" placeholder="Entre si disponible" required>
+            </div>
+            <div class="form-group">
+               <label for="langue">langue de dictionnaire</label>
+               <input type="text" ngModel name="langue" class="form-control" id="langue" placeholder="Entre  la langue de dictionnaire" required>
+            </div>
+           
+            <div class="modal-footer">
+               <button type="button" id="add-dictionnaire-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Ajouter</button>
+            </div>
+            </form>
+         </div>
+      </div>
+    </div>
+    </div>
+ 
+ <!-- Edit Modal -->
+  <div class="modal fade" id="updatedictionnaireModel" tabindex="-1" role="dialog" aria-labelledby="ModelEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updatedictionnaireModalLabel">Modifier dictionnaire {{editdictionnaire?.nom}} </h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <form #editForm="ngForm">
+                <div class="form-group">
+                   <label for="nom">Nom de dictionnaire</label>
+                   <input type="text" ngModel="{{editdictionnaire?.nom}}" name="nom" class="form-control" id="nom" aria-describedby="emailHelp" placeholder="Entre le nom de dictionnaire">
+                </div>
+                <div class="form-group">
+                   <label for="prix_vente">Prix de dictionnaire</label>
+                   <input type="number" ngModel="{{editdictionnaire?.prix_vente}}" name="prix_vente" class="form-control" id="prix_vente" placeholder="Entre le prix de dictionnaire">
+                </div>
+                
+                   <input type="hidden" ngModel="{{editdictionnaire?.id}}" name="id" class="form-control" id="id" >
+        
+                <div class="form-group">
+                   <label for="disponible">Disponibiliter</label>
+                   <input type="number" ngModel="{{editdictionnaire?.disponible}}" name="disponible" class="form-control" id="disponible"  placeholder="Entre si disponible">
+                </div>
+                <div class="form-group">
+                   <label for="langue">langue de dictionnaire</label>
+                   <input type="text" ngModel="{{editdictionnaire?.langue}}" name="langue" class="form-control" id="langue" placeholder="Entre langue de dictionnaire" >
+                </div>
+               
+                <div class="modal-footer">
+                   <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                   <button (click)="onUpdatedictionnaire(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Modifier</button>
+                </div>
+             </form>
+          </div>
+       </div>
+    </div>
+  </div>
+  <!-- Notification for no dictionnaire-->
+  <div *ngIf="dictionnaires?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">NON DICTIONNAIRES!</h4>
+    <p>
+      Aucun dictionnaire n'a été trouvé.</p>
+  </div>
+  </div>
+ 
